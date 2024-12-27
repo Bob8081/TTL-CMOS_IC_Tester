@@ -1,0 +1,375 @@
+;#include <mega32a.h>
+;PCODE: $00000000 VOL: 0
+	#ifndef __SLEEP_DEFINED__
+;PCODE: $00000001 VOL: 0
+	#define __SLEEP_DEFINED__
+;PCODE: $00000002 VOL: 0
+	.EQU __se_bit=0x80
+;PCODE: $00000003 VOL: 0
+	.EQU __sm_mask=0x70
+;PCODE: $00000004 VOL: 0
+	.EQU __sm_powerdown=0x20
+;PCODE: $00000005 VOL: 0
+	.EQU __sm_powersave=0x30
+;PCODE: $00000006 VOL: 0
+	.EQU __sm_standby=0x60
+;PCODE: $00000007 VOL: 0
+	.EQU __sm_ext_standby=0x70
+;PCODE: $00000008 VOL: 0
+	.EQU __sm_adc_noise_red=0x10
+;PCODE: $00000009 VOL: 0
+	.SET power_ctrl_reg=mcucr
+;PCODE: $0000000A VOL: 0
+	#endif
+;PCODE: $0000000B VOL: 0
+;PCODE: $0000000C VOL: 0
+;
+;#include <io.h>
+;#include <delay.h>
+;
+;// Pin Definitions
+;#define INPUT_PINS_PD ((1 << PORTD0) | (1 << PORTD1) | (1 << PORTD3) | (1 << PORTD4))
+;#define INPUT_PINS_PA ((1 << PORTA5) | (1 << PORTA4) | (1 << PORTA2) | (1 << PORTA1))
+;
+;#define OUTPUT_PINS_PD ((1 << PORTD2) | (1 << PORTD5))
+;#define OUTPUT_PINS_PA ((1 << PORTA6) | (1 << PORTA3))
+;#define VCC_PIN     PORTA0
+;#define GND_PIN     PORTD6
+;#define LED_PASS    PORTC0
+;#define LED_FAIL    PORTC1
+;
+;// Function prototypes
+;void initialize_ports(void);
+;void power_ic(void);
+;unsigned char test_7408(void);
+;void display_result(unsigned char result);
+;
+;void main(void) {
+; 0000 0017 void main(void) {
+
+	.CSEG
+;PCODE: $0000000D VOL: 0
+; 0000 0018     unsigned char result;
+; 0000 0019     // Initialize ports
+; 0000 001A     initialize_ports();
+;	result -> R17
+;PCODE: $0000000E VOL: 0
+; 0000 001B 
+; 0000 001C     // Power the IC
+; 0000 001D     power_ic();
+;PCODE: $0000000F VOL: 0
+; 0000 001E 
+; 0000 001F     // Test the IC
+; 0000 0020     result = test_7408();
+;PCODE: $00000010 VOL: 0
+;PCODE: $00000011 VOL: 0
+; 0000 0021 
+; 0000 0022     // Display the result using LEDs
+; 0000 0023     display_result(result);
+;PCODE: $00000012 VOL: 0
+;PCODE: $00000013 VOL: 0
+; 0000 0024 
+; 0000 0025     while (1) {
+;PCODE: $00000014 VOL: 0
+; 0000 0026         // Infinite loop
+; 0000 0027     }
+;PCODE: $00000015 VOL: 0
+;PCODE: $00000016 VOL: 0
+; 0000 0028 }
+;PCODE: $00000017 VOL: 0
+;PCODE: $00000018 VOL: 0
+;PCODE: $00000019 VOL: 0
+;
+;void initialize_ports(void) {
+; 0000 002A void initialize_ports(void) {
+;PCODE: $0000001A VOL: 0
+;PCODE: $0000001B VOL: 0
+; 0000 002B     // Configure input pins
+; 0000 002C     DDRD &= ~INPUT_PINS_PD;  // Set PORTD0, PORTD1, PORTD3, PORTD4 as input
+;PCODE: $0000001C VOL: 0
+;PCODE: $0000001D VOL: 0
+;PCODE: $0000001E VOL: 0
+; 0000 002D     PORTD &= ~INPUT_PINS_PD; // Disable pull-up resistors
+;PCODE: $0000001F VOL: 0
+;PCODE: $00000020 VOL: 0
+;PCODE: $00000021 VOL: 0
+; 0000 002E 
+; 0000 002F     DDRA &= ~INPUT_PINS_PA;  // Set PORTA1, PORTA2, PORTA4, PORTA5 as input
+;PCODE: $00000022 VOL: 0
+;PCODE: $00000023 VOL: 0
+;PCODE: $00000024 VOL: 0
+; 0000 0030     PORTA &= ~INPUT_PINS_PA; // Disable pull-up resistors
+;PCODE: $00000025 VOL: 0
+;PCODE: $00000026 VOL: 0
+;PCODE: $00000027 VOL: 0
+; 0000 0031 
+; 0000 0032     // Configure output pins
+; 0000 0033     DDRD |= OUTPUT_PINS_PD;    // Set PORTD2, PORTD5 as output
+;PCODE: $00000028 VOL: 0
+;PCODE: $00000029 VOL: 0
+;PCODE: $0000002A VOL: 0
+; 0000 0034     PORTD &= ~OUTPUT_PINS_PD;  // Initialize outputs to low
+;PCODE: $0000002B VOL: 0
+;PCODE: $0000002C VOL: 0
+;PCODE: $0000002D VOL: 0
+; 0000 0035 
+; 0000 0036     DDRA |= OUTPUT_PINS_PA;    // Set PORTA3, PORTA6 as output
+;PCODE: $0000002E VOL: 0
+;PCODE: $0000002F VOL: 0
+;PCODE: $00000030 VOL: 0
+; 0000 0037     PORTA &= ~OUTPUT_PINS_PA;  // Initialize outputs to low
+;PCODE: $00000031 VOL: 0
+;PCODE: $00000032 VOL: 0
+;PCODE: $00000033 VOL: 0
+; 0000 0038 
+; 0000 0039     // Configure power pins
+; 0000 003A     DDRA |= (1 << VCC_PIN);    // Set PORTA0 (VCC) as output
+;PCODE: $00000034 VOL: 0
+;PCODE: $00000035 VOL: 0
+; 0000 003B     DDRD |= (1 << GND_PIN);    // Set PORTD6 (GND) as output
+;PCODE: $00000036 VOL: 0
+;PCODE: $00000037 VOL: 0
+; 0000 003C     PORTA &= ~(1 << VCC_PIN);  // Initialize VCC to low
+;PCODE: $00000038 VOL: 0
+;PCODE: $00000039 VOL: 0
+; 0000 003D     PORTD &= ~(1 << GND_PIN);  // Initialize GND to low
+;PCODE: $0000003A VOL: 0
+;PCODE: $0000003B VOL: 0
+; 0000 003E 
+; 0000 003F     // Configure LED pins
+; 0000 0040     DDRC |= (1 << LED_PASS) | (1 << LED_FAIL); // Set PORTC0, PORTC1 as output
+;PCODE: $0000003C VOL: 0
+;PCODE: $0000003D VOL: 0
+;PCODE: $0000003E VOL: 0
+; 0000 0041     PORTC &= ~((1 << LED_PASS) | (1 << LED_FAIL)); // Initialize LEDs to off
+;PCODE: $0000003F VOL: 0
+;PCODE: $00000040 VOL: 0
+;PCODE: $00000041 VOL: 0
+; 0000 0042 }
+;PCODE: $00000042 VOL: 0
+;PCODE: $00000043 VOL: 0
+;
+;void power_ic(void) {
+; 0000 0044 void power_ic(void) {
+;PCODE: $00000044 VOL: 0
+;PCODE: $00000045 VOL: 0
+; 0000 0045     // Provide power to the IC under test
+; 0000 0046     PORTA |= (1 << VCC_PIN);  // Set VCC_PIN high
+;PCODE: $00000046 VOL: 0
+;PCODE: $00000047 VOL: 0
+; 0000 0047     PORTD &= ~(1 << GND_PIN); // Set GND_PIN low
+;PCODE: $00000048 VOL: 0
+;PCODE: $00000049 VOL: 0
+; 0000 0048 }
+;PCODE: $0000004A VOL: 0
+;PCODE: $0000004B VOL: 0
+;
+;unsigned char test_7408(void) {
+; 0000 004A unsigned char test_7408(void) {
+;PCODE: $0000004C VOL: 0
+;PCODE: $0000004D VOL: 0
+; 0000 004B 
+; 0000 004C     unsigned char output_gate1;
+; 0000 004D     unsigned char output_gate2;
+; 0000 004E     unsigned char output_gate3;
+; 0000 004F     unsigned char output_gate4;
+; 0000 0050 
+; 0000 0051     unsigned char expected_output;
+; 0000 0052 
+; 0000 0053     unsigned char input_combinations[4] = {0x00, 0x01, 0x02, 0x03};
+; 0000 0054     unsigned char i = 0;
+; 0000 0055     for (i = 0; i < 4; i++) {
+;PCODE: $0000004E VOL: 0
+;PCODE: $0000004F VOL: 0
+;PCODE: $00000050 VOL: 0
+;PCODE: $00000051 VOL: 0
+;PCODE: $00000052 VOL: 0
+;PCODE: $00000053 VOL: 0
+;PCODE: $00000054 VOL: 0
+;PCODE: $00000055 VOL: 0
+;PCODE: $00000056 VOL: 0
+;PCODE: $00000057 VOL: 0
+;	output_gate1 -> R17
+;	output_gate2 -> R16
+;	output_gate3 -> R19
+;	output_gate4 -> R18
+;	expected_output -> R21
+;	input_combinations -> Y+6
+;	i -> R20
+;PCODE: $00000058 VOL: 0
+;PCODE: $00000059 VOL: 0
+;PCODE: $0000005A VOL: 0
+;PCODE: $0000005B VOL: 0
+;PCODE: $0000005C VOL: 0
+;PCODE: $0000005D VOL: 0
+;PCODE: $0000005E VOL: 0
+;PCODE: $0000005F VOL: 0
+;PCODE: $00000060 VOL: 0
+;PCODE: $00000061 VOL: 0
+;PCODE: $00000062 VOL: 0
+; 0000 0056         // Set inputs for all gates
+; 0000 0057         unsigned char inputs = input_combinations[i];
+; 0000 0058 
+; 0000 0059         PORTD = (PORTD & ~INPUT_PINS_PD) | ((inputs & 0x03) << PORTD0); // PORTD0, PORTD1 inputs
+;PCODE: $00000063 VOL: 0
+;	input_combinations -> Y+7
+;	inputs -> Y+0
+;PCODE: $00000064 VOL: 0
+;PCODE: $00000065 VOL: 0
+;PCODE: $00000066 VOL: 0
+;PCODE: $00000067 VOL: 0
+;PCODE: $00000068 VOL: 0
+;PCODE: $00000069 VOL: 0
+;PCODE: $0000006A VOL: 0
+;PCODE: $0000006B VOL: 0
+;PCODE: $0000006C VOL: 0
+;PCODE: $0000006D VOL: 0
+;PCODE: $0000006E VOL: 0
+;PCODE: $0000006F VOL: 0
+;PCODE: $00000070 VOL: 0
+; 0000 005A         PORTA = (PORTA & ~INPUT_PINS_PA) | ((inputs & 0x03) << PORTA1); // PORTA1, PORTA2 inputs
+;PCODE: $00000071 VOL: 0
+;PCODE: $00000072 VOL: 0
+;PCODE: $00000073 VOL: 0
+;PCODE: $00000074 VOL: 0
+;PCODE: $00000075 VOL: 0
+;PCODE: $00000076 VOL: 0
+;PCODE: $00000077 VOL: 0
+;PCODE: $00000078 VOL: 0
+; 0000 005B 
+; 0000 005C         delay_us(10); // Allow IC to process
+;PCODE: $00000079 VOL: 0
+; 0000 005D 
+; 0000 005E         // Read outputs
+; 0000 005F         output_gate1 = (PIND & (1 << PORTD2)) >> PORTD2;
+;PCODE: $0000007A VOL: 0
+;PCODE: $0000007B VOL: 0
+;PCODE: $0000007C VOL: 0
+;PCODE: $0000007D VOL: 0
+;PCODE: $0000007E VOL: 0
+; 0000 0060         output_gate2 = (PIND & (1 << PORTD5)) >> PORTD5;
+;PCODE: $0000007F VOL: 0
+;PCODE: $00000080 VOL: 0
+;PCODE: $00000081 VOL: 0
+;PCODE: $00000082 VOL: 0
+;PCODE: $00000083 VOL: 0
+;PCODE: $00000084 VOL: 0
+; 0000 0061         output_gate3 = (PINA & (1 << PORTA3)) >> PORTA3;
+;PCODE: $00000085 VOL: 0
+;PCODE: $00000086 VOL: 0
+;PCODE: $00000087 VOL: 0
+;PCODE: $00000088 VOL: 0
+;PCODE: $00000089 VOL: 0
+; 0000 0062         output_gate4 = (PINA & (1 << PORTA6)) >> PORTA6;
+;PCODE: $0000008A VOL: 0
+;PCODE: $0000008B VOL: 0
+;PCODE: $0000008C VOL: 0
+;PCODE: $0000008D VOL: 0
+;PCODE: $0000008E VOL: 0
+;PCODE: $0000008F VOL: 0
+; 0000 0063 
+; 0000 0064         // Calculate expected outputs for each gate
+; 0000 0065         expected_output = (inputs & 0x01) && ((inputs >> 1) & 0x01);
+;PCODE: $00000090 VOL: 0
+;PCODE: $00000091 VOL: 0
+;PCODE: $00000092 VOL: 0
+;PCODE: $00000093 VOL: 0
+;PCODE: $00000094 VOL: 0
+;PCODE: $00000095 VOL: 0
+;PCODE: $00000096 VOL: 0
+;PCODE: $00000097 VOL: 0
+;PCODE: $00000098 VOL: 0
+;PCODE: $00000099 VOL: 0
+;PCODE: $0000009A VOL: 0
+;PCODE: $0000009B VOL: 0
+;PCODE: $0000009C VOL: 0
+;PCODE: $0000009D VOL: 0
+; 0000 0066 
+; 0000 0067         // Verify each gate's output
+; 0000 0068         if (output_gate1 != expected_output) return 0;
+;PCODE: $0000009E VOL: 0
+;PCODE: $0000009F VOL: 0
+;PCODE: $000000A0 VOL: 0
+;PCODE: $000000A1 VOL: 0
+;PCODE: $000000A2 VOL: 0
+;PCODE: $000000A3 VOL: 0
+;PCODE: $000000A4 VOL: 0
+;PCODE: $000000A5 VOL: 0
+; 0000 0069         if (output_gate2 != expected_output) return 0;
+;PCODE: $000000A6 VOL: 0
+;PCODE: $000000A7 VOL: 0
+;PCODE: $000000A8 VOL: 0
+;PCODE: $000000A9 VOL: 0
+;PCODE: $000000AA VOL: 0
+;PCODE: $000000AB VOL: 0
+;PCODE: $000000AC VOL: 0
+;PCODE: $000000AD VOL: 0
+;PCODE: $000000AE VOL: 0
+; 0000 006A         if (output_gate3 != expected_output) return 0;
+;PCODE: $000000AF VOL: 0
+;PCODE: $000000B0 VOL: 0
+;PCODE: $000000B1 VOL: 0
+;PCODE: $000000B2 VOL: 0
+;PCODE: $000000B3 VOL: 0
+;PCODE: $000000B4 VOL: 0
+;PCODE: $000000B5 VOL: 0
+;PCODE: $000000B6 VOL: 0
+;PCODE: $000000B7 VOL: 0
+; 0000 006B         if (output_gate4 != expected_output) return 0;
+;PCODE: $000000B8 VOL: 0
+;PCODE: $000000B9 VOL: 0
+;PCODE: $000000BA VOL: 0
+;PCODE: $000000BB VOL: 0
+;PCODE: $000000BC VOL: 0
+;PCODE: $000000BD VOL: 0
+;PCODE: $000000BE VOL: 0
+;PCODE: $000000BF VOL: 0
+;PCODE: $000000C0 VOL: 0
+; 0000 006C     }
+;PCODE: $000000C1 VOL: 0
+;PCODE: $000000C2 VOL: 0
+;PCODE: $000000C3 VOL: 0
+;PCODE: $000000C4 VOL: 0
+;PCODE: $000000C5 VOL: 0
+;PCODE: $000000C6 VOL: 0
+;PCODE: $000000C7 VOL: 0
+; 0000 006D 
+; 0000 006E     return 1; // Test passed
+;PCODE: $000000C8 VOL: 0
+;PCODE: $000000C9 VOL: 0
+;PCODE: $000000CA VOL: 0
+;PCODE: $000000CB VOL: 0
+; 0000 006F }
+;PCODE: $000000CC VOL: 0
+;
+;void display_result(unsigned char result) {
+; 0000 0071 void display_result(unsigned char result) {
+;PCODE: $000000CD VOL: 0
+;PCODE: $000000CE VOL: 0
+; 0000 0072     if (result) {
+;PCODE: $000000CF VOL: 0
+;	result -> Y+0
+;PCODE: $000000D0 VOL: 0
+;PCODE: $000000D1 VOL: 0
+;PCODE: $000000D2 VOL: 0
+; 0000 0073         PORTC |= (1 << LED_PASS);  // Light up pass LED
+;PCODE: $000000D3 VOL: 0
+;PCODE: $000000D4 VOL: 0
+; 0000 0074         PORTC &= ~(1 << LED_FAIL); // Turn off fail LED
+;PCODE: $000000D5 VOL: 0
+;PCODE: $000000D6 VOL: 0
+; 0000 0075     } else {
+;PCODE: $000000D7 VOL: 0
+;PCODE: $000000D8 VOL: 0
+; 0000 0076         PORTC |= (1 << LED_FAIL);  // Light up fail LED
+;PCODE: $000000D9 VOL: 0
+;PCODE: $000000DA VOL: 0
+; 0000 0077         PORTC &= ~(1 << LED_PASS); // Turn off pass LED
+;PCODE: $000000DB VOL: 0
+;PCODE: $000000DC VOL: 0
+; 0000 0078     }
+;PCODE: $000000DD VOL: 0
+; 0000 0079 }
+;PCODE: $000000DE VOL: 0
+;PCODE: $000000DF VOL: 0
+;PCODE: $000000E0 VOL: 0

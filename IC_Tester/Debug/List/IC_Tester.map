@@ -1,0 +1,29 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+main                                                                              0x00044      8
+initialize_ports                                                                  0x0004C     35
+power_ic                                                                          0x0006F      3
+test_7408                                                                         0x00072    112
+display_result                                                                    0x000E2     11
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+main                                                                              0x00044      8
+initialize_ports                                                                  0x0004C     35
+power_ic                                                                          0x0006F      3
+test_7408                                                                         0x00072    112
+display_result                                                                    0x000E2     11

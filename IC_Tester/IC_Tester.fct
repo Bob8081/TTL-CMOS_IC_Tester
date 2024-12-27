@@ -1,0 +1,11 @@
+main DSTACK_USAGE:8 DSTACK_LEVEL:8 FILE:"IC_Tester.c" LINE:38
+display_result DSTACK_USAGE:1 DSTACK_LEVEL:9 FILE:"IC_Tester.c" LINE:529
+glcd_drawCenteredStr DSTACK_USAGE:9 DSTACK_LEVEL:18 FILE:"IC_Tester.c" LINE:564
+glcd_putcharxy DSTACK_USAGE:3 DSTACK_LEVEL:21 FILE:"..\..\..\CVAVR\lib\graphics.lib" LINE:439
+glcd_putchar DSTACK_USAGE:8 DSTACK_LEVEL:29 FILE:"..\..\..\CVAVR\lib\graphics.lib" LINE:344
+glcd_block DSTACK_USAGE:17 DSTACK_LEVEL:46 FILE:"..\..\..\CVAVR\lib\glcd_pcd8544.lib" LINE:343
+pcd8544_wrmasked DSTACK_USAGE:6 DSTACK_LEVEL:52 FILE:"..\..\..\CVAVR\lib\glcd_pcd8544.lib" LINE:295
+pcd8544_rdbyte DSTACK_USAGE:2 DSTACK_LEVEL:54 FILE:"..\..\..\CVAVR\lib\glcd_pcd8544.lib" LINE:126
+pcd8544_gotoxy DSTACK_USAGE:2 DSTACK_LEVEL:56 FILE:"..\..\..\CVAVR\lib\glcd_pcd8544.lib" LINE:115
+pcd8544_wrcmd DSTACK_USAGE:1 DSTACK_LEVEL:57 FILE:"..\..\..\CVAVR\lib\glcd_pcd8544.lib" LINE:81
+pcd8544_wrbus DSTACK_USAGE:2 DSTACK_LEVEL:59 FILE:"..\..\..\CVAVR\lib\glcd_pcd8544.lib" LINE:58
