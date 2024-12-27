@@ -19,7 +19,7 @@ Below is the schematic diagram for the IC Tester hardware.
 ## Demo Images
 
 ### Hardware Setup
-![Hardware Setup](./Tester.jpg)  
+![Hardware Setup](./Images/Tester.jpg)  
 *Hardware showcasing DIP IC socket, GLCD, and microcontroller connections.*
 
 ### Testing in Action
