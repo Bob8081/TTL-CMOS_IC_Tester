@@ -14,7 +14,7 @@ An IC Tester for CMOS and TTL IC families built on the ATMEGA32 MCU. The firmwar
 ### Schematics:
 Below is the schematic diagram for the IC Tester hardware. 
 
-![Schematic](./Images/schematic.png)
+![Schematic](./Images/Schematics.png)
 
 ## Demo Images
 
