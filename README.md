@@ -14,14 +14,14 @@ An IC Tester for CMOS and TTL IC families built on the ATMEGA32 MCU. The firmwar
 ### Schematics:
 Below is the schematic diagram for the IC Tester hardware. 
 
-![Schematic](./images/schematic.pdf)
+![Schematic](./Images/schematic.pdf)
 
 ## Demo Images
 
 ### Hardware Setup
-![Hardware Setup](./images/hardware-setup.jpg)  
+![Hardware Setup](./Tester.jpg)  
 *Hardware showcasing DIP IC socket, GLCD, and microcontroller connections.*
 
 ### Testing in Action
-![Testing in Action](./images/testing-action.jpg)  
-*The IC Tester in action, validating a 7445 IC.*
+![Testing in Action](./images/Demo.jpg)  
+*The IC Tester in action, validating a 74157 IC.*
