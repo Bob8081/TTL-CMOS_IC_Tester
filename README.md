@@ -10,6 +10,7 @@ An IC Tester for CMOS and TTL IC families built on the ATMEGA32 MCU. The firmwar
 4. **ZIF Socket:** Only DIP14 and DIP16 are supported currently.
 5. **Push Buttons & LEDs:** For interaction and feedback.
 6. **Resistors & Capacitors:** Supporting components for things like Pull-ups and biasing the MCU crystal.
+7. Buzzer: A 5v buzzer for feedback over Button presses
 
 ### Schematics:
 Below is the schematic diagram for the IC Tester hardware. 
@@ -20,7 +21,7 @@ Below is the schematic diagram for the IC Tester hardware.
 
 ### Hardware Setup
 ![Hardware Setup](./Images/Tester.jpg)  
-*Hardware showcasing DIP IC socket, GLCD, and microcontroller connections.*
+*Hardware showcasing ZIF socket, GLCD, and microcontroller connections.*
 
 ### Testing in Action
 ![Testing in Action](./Images/Demo.jpg)  
